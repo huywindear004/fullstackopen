@@ -1,0 +1,20 @@
+.anecdotes {
+  height: 80px;
+  padding: 10px;
+  outline: 1px solid black;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+.vote_info {
+  font-weight: bold;
+}
+.btn_container {
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  height: 50px;
+  margin-right: 10px;
+  width: 150px;
+}

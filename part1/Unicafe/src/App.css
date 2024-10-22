@@ -1,0 +1,17 @@
+button {
+  padding: 10px 30px;
+  margin: 0 10px;
+}
+button:hover {
+  opacity: 0.8;
+}
+
+.btn_good {
+  background-color: lightgreen;
+}
+.btn_neutral {
+  background-color: cornflowerblue;
+}
+.btn_bad {
+  background-color: lightsalmon;
+}
