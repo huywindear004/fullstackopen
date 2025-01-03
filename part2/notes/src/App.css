@@ -1,0 +1,23 @@
+.important {
+  color: red;
+  font-size: 2em;
+  padding: 5px;
+}
+
+.notification {
+  right: 0;
+  position: absolute;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.notification.error {
+  color: red;
+}
+.notification.success {
+  color: green;
+}
