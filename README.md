@@ -68,3 +68,20 @@ My solutions for the exercises of the [University of Helsinki](https://www.helsi
 - Webpack
 - Class components, Miscellaneous
 - Exercises: extending the bloglist
+
+### [Part 8 - GraphQL](https://fullstackopen.com/en/part8)
+
+- Introduction to GraphQL as an alternative to REST communication between browser and server.
+- GraphQL allows clients to request precisely the data they need, reducing over-fetching and under-fetching, leading to more efficient and flexible APIs.
+
+### [Part 9 - TypeScript](https://fullstackopen.com/en/part9)
+
+This part is all about TypeScript: an open-source typed superset of JavaScript developed by Microsoft that compiles to plain JavaScript.
+
+### [Part 10 - React Native](https://fullstackopen.com/en/part10)
+
+### [Part 11 - CI/CD](https://fullstackopen.com/en/part11)
+
+### [Part 12 - Containers](https://fullstackopen.com/en/part12)
+
+### [Part 13 - Using relational databases](https://fullstackopen.com/en/part13)
