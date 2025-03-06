@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import contactServices from "./services/contact";
-import Persons from "./components/Persons";
+import PersonList from "./components/PersonList";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import Toast from "./components/Toast";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
+  const nameInputRef = useRef("");
+  const numberInputRef = useRef("");
   const [nameFilter, setNameFilter] = useState("");
   const [message, setMessage] = useState(null);
+
+  console.log("render");
 
   useEffect(() => {
     contactServices.getAll().then((initialPersons) => {
@@ -22,41 +24,53 @@ const App = () => {
   const addPerson = (event) => {
     event.preventDefault();
 
-    if (!newName || !newNumber) {
+    const nameInputValue = nameInputRef.current.value;
+    const numberInputValue = numberInputRef.current.value;
+
+    // check if name or number is missing
+    if (!nameInputValue || !numberInputValue) {
       setMessage({ content: "Name or number is missing", type: "danger" });
       return;
     }
 
-    if (persons.some((p) => p.number === newNumber)) {
+    // check if number is already added
+    if (persons.some((p) => p.number === numberInputValue)) {
       setMessage({
-        content: `Number ${newNumber} is already added to phonebook`,
+        content: `Number ${numberInputValue} is already added to phonebook`,
         type: "danger",
       });
       return;
     }
 
-    const person = persons.find((p) => p.name === newName);
+    // find if the person is already in the phonebook
+    // if so, ask to update the number
+    const person = persons.find(
+      (p) => p.name.toLowerCase() === nameInputValue.toLowerCase()
+    );
     if (person) {
       let isUpdate = window.confirm(
-        `${newName} is already added to phonebook, replace the old number with a new one?`
+        `${person.name} is already added to phonebook, replace the old number with a new one?`
       );
 
       if (!isUpdate) return;
 
-      const changedPerson = { ...person, number: newNumber };
+      const changedPerson = { ...person, number: numberInputValue };
       contactServices
         .update(person.id, changedPerson)
         .then((returnedPerson) => {
           setPersons(
             persons.map((p) => (p.id !== person.id ? p : returnedPerson))
           );
-          setNewName("");
-          setNewNumber("");
-          setMessage({ content: `Updated ${newName}`, type: "success" });
-        })
-        .catch(() => {
+          nameInputRef.current.value = "";
+          numberInputRef.current.value = "";
           setMessage({
-            content: `Could not update ${newName}'s number`,
+            content: `Updated ${person.name}'s number`,
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          setMessage({
+            content: error.response.data.error,
             type: "danger",
           });
         });
@@ -64,25 +78,40 @@ const App = () => {
       return;
     }
 
-    const personObject = {
-      name: newName,
-      number: newNumber,
+    const newPerson = {
+      name: nameInputValue,
+      number: numberInputValue,
     };
     contactServices
-      .create(personObject)
+      .create(newPerson)
       .then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
 
-        setNewName("");
-        setNewNumber("");
-        setMessage({ content: `Added ${newName}`, type: "success" });
-      })
-      .catch(() => {
+        nameInputRef.current.value = "";
+        numberInputRef.current.value = "";
+
         setMessage({
-          content: `Could not add ${newName}`,
+          content: `Added ${returnedPerson.name}`,
+          type: "success",
+        });
+      })
+      .catch((error) => {
+        setMessage({
+          content: error.response.data.error,
           type: "danger",
         });
       });
+  };
+
+  const deletePerson = (id) => {
+    let isDelete = window.confirm("Do you really want to delete this person?");
+
+    if (!isDelete) return;
+
+    contactServices.remove(id).then(() => {
+      setPersons(persons.filter((person) => person.id !== id));
+      setMessage({ content: "Deleted", type: "success" });
+    });
   };
 
   const filteredPersons = persons.filter((p) =>
@@ -96,21 +125,15 @@ const App = () => {
       <div className="container">
         <h2>Add a new contact</h2>
         <PersonForm
-          newName={newName}
-          newNumber={newNumber}
-          setNewName={setNewName}
-          setNewNumber={setNewNumber}
+          nameInputRef={nameInputRef}
+          numberInputRef={numberInputRef}
           onSubmit={addPerson}
         />
 
         <h2>Numbers</h2>
         <Filter nameFilter={nameFilter} setNameFilter={setNameFilter} />
 
-        <Persons
-          persons={filteredPersons}
-          setPersons={setPersons}
-          setMessage={setMessage}
-        />
+        <PersonList persons={filteredPersons} deletePerson={deletePerson} />
       </div>
     </>
   );

@@ -1,45 +1,32 @@
-export default function PersonForm({
-  newName,
-  newNumber,
-  setNewName,
-  setNewNumber,
-  onSubmit,
-}) {
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
-
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
-  };
+export default function PersonForm({ nameInputRef, numberInputRef, onSubmit }) {
   return (
     <form onSubmit={onSubmit}>
       <div className="row">
         <div className="col-md-6">
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon1">
+            <label className="input-group-text" htmlFor="basic-addon1">
               Name
-            </span>
+            </label>
             <input
+              id="basic-addon1"
               type="text"
               className="form-control"
               aria-describedby="basic-addon1"
-              value={newName}
-              onChange={handleNameChange}
+              ref={nameInputRef}
             />
           </div>
         </div>
         <div className="col-md-6">
           <div className="input-group mb-3">
-            <span className="input-group-text" id="basic-addon2">
+            <label className="input-group-text" htmlFor="basic-addon2">
               Number
-            </span>
+            </label>
             <input
+              id="basic-addon2"
               type="text"
               className="form-control"
               aria-describedby="basic-addon2"
-              value={newNumber}
-              onChange={handleNumberChange}
+              ref={numberInputRef}
             />
           </div>
         </div>
