@@ -6,7 +6,8 @@
     "part2/*",
     "part3/notes/*",
     "part3/phonebook/*",
-    "part4"
+    "part4/notes/*",
+    "part4/bloglist/*"
   ],
   "dependencies": {
     "axios": "^1.7.9",

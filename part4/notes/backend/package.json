@@ -1,0 +1,16 @@
+{
+  "name": "notes_be_part4",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
+}
